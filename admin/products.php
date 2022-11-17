@@ -21,6 +21,9 @@
     <div>
         <a href="dashboard.php">Retour</a>
     </div>
+    <div>
+        <a href="addProduct.php">Ajouter un produit</a>
+    </div>
     <table border="1">
         <thead>
             <tr>
