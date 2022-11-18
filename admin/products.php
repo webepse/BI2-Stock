@@ -41,7 +41,7 @@
                         echo "<td>".$don['id']."</td>";
                         echo "<td>".$don['title']."</td>";
                         echo "<td>";
-                            echo "<a href='#'>Modifier</a>";
+                            echo "<a href='updateProduct.php?id=".$don['id']."'>Modifier</a>";
                             echo "<a href='#'>Supprimer</a>";
                         echo "</td>";
                     echo "</tr>";

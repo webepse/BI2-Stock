@@ -4,6 +4,26 @@
     {
         header("LOCATION:index.php");
     }
+
+
+    //vérifier la prés de id
+    if(isset($_GET['id']))
+    {
+        $id = htmlspecialchars($_GET['id']);
+    }else{
+        header("LOCATION:products.php");
+    }
+
+    // vérifier si l'id est dans la bdd
+    require "../connexion.php";
+    $req = $bdd->prepare("SELECT * FROM products WHERE id=?");
+    $req->execute([$id]);
+    if(!$don = $req->fetch())
+    {
+        $req->closeCursor();
+        header("LOCATION:products.php");
+    }
+    $req->closeCursor();
 ?>
 
 <!DOCTYPE html>
@@ -19,22 +39,22 @@
     <div>
         <a href="products.php">Retour</a>
     </div>
-    <h2>Ajouter un produit</h2>
-    <form action="treatmentAddProduct.php" method="POST">
+    <h2>Modifier un produit</h2>
+    <form action="treatmentUpdateProduct.php?id=<?= $id ?>" method="POST">
         <div class="form-group">
             <label for="title">Titre: </label>
-            <input type="text" id="title" name="title">
+            <input type="text" id="title" name="title" value="<?= $don['title'] ?>">
         </div>
         <div class="form-group">
             <label for="date">Date: </label>
-            <input type="date" id="date" name="date">
+            <input type="date" id="date" name="date" value="<?= $don['date'] ?>">
         </div>
         <div class="form-group">
             <label for="description">Description: </label>
-            <textarea name="description" id="description" cols="30" rows="10"></textarea>
+            <textarea name="description" id="description" cols="30" rows="10"><?= $don['description'] ?></textarea>
         </div>
         <div class="form-group">
-            <input type="submit" value="Ajouter">
+            <input type="submit" value="Modifier">
         </div>
     </form>
     <?php
