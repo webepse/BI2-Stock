@@ -54,8 +54,13 @@
         //vérif si err sinon traitement
         if($err==0){
             require "../connexion.php";
-            $update = $bdd->prepare("UPDATE products SET title=?, date=?, description=? WHERE id=?");
-            $update->execute([$title, $date, $description, $id]);
+            $update = $bdd->prepare("UPDATE products SET title=:titre, date=:date, description=:description WHERE id=:myid");
+            $update->execute([
+                ":titre" => $title, 
+                ":date" => $date, 
+                ":description" => $description, 
+                ":myid" => $id
+            ]);
             $update->closeCursor();
             header("LOCATION:products.php");
 
