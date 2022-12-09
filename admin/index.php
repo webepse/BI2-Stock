@@ -49,30 +49,40 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <title>Document</title>
 </head>
 <body>
     <div class="container">
-        <h1>Connexion à l'administration de Stock</h1>
-        <?php
-        if(isset($error))
-        {
-            echo "<div class='alert'>".$error."</div>";
-        }
-        ?>
-        <form action="index.php" method="POST">
-            <div class="form-group">
-                <label for="login">Login: </label>
-                <input type="text" id="login" name="login">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <h1>Connexion à l'administration de Stock</h1>
+                <?php
+                if(isset($error))
+                {
+                    echo "<div class='alert alert-danger'>".$error."</div>";
+                }
+                ?>
+                <form action="index.php" method="POST">
+                    <div class="form-group my-3">
+                        <label for="login">Login: </label>
+                        <input type="text" id="login" name="login" class="form-control">
+                    </div>
+                    <div class="form-group my-3">
+                        <label for="password">Mot de passe: </label>
+                        <input type="password" name="password" id="password" class="form-control">
+                    </div>
+                    <div class="form-group my-3">
+                        <input type="submit" value="Connexion" class="btn btn-primary">
+                        <a href="../index.php" class="btn btn-secondary mx-1">Retour au site</a>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label for="password">Mot de passe: </label>
-                <input type="password" name="password" id="password">
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Connexion">
-            </div>
-        </form>
+        </div>
+
+
+       
+       
     </div>
 </body>
 </html>

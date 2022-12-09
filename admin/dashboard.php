@@ -19,9 +19,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <title>Administration de Stock</title>
+    <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
+    <?php 
+        include("partials/header.php");
+    ?>
     <h1>Administration</h1>
     <div>
         <a href="dashboard.php?deco=ok">Déconnexion</a>
