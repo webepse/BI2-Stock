@@ -6,6 +6,26 @@
     }
 
     require "../connexion.php";
+
+    if(isset($_GET['delete']))
+    {
+        $id = htmlspecialchars($_GET['delete']);
+        $verif = $bdd->prepare("SELECT * FROM products WHERE id=?");
+        $verif->execute([$id]);
+        if(!$donVerif = $verif->fetch() )
+        {
+            $verif->closeCursor();
+            header("LOCATION:products.php");
+        }
+        $verif->closeCursor();
+        
+        // supprimer le produit
+        $delete = $bdd->prepare("DELETE FROM products WHERE id=?");
+        $delete->execute([$id]);
+        $delete->closeCursor();
+        header("LOCATION:products.php?successDelete=".$id);
+
+    }
 ?>
 
 <!DOCTYPE html>
@@ -22,38 +42,46 @@
     <?php 
         include("partials/header.php");
     ?>
-    <h1>Administration</h1>
-    <div>
-        <a href="dashboard.php">Retour</a>
+    <div class="container">
+        <h1>Administration</h1>
+        <div>
+            <a href="dashboard.php" class="btn btn-secondary">Retour</a>
+        </div>
+        <div>
+            <a href="addProduct.php" class="btn btn-primary my-3">Ajouter un produit</a>
+        </div>
+        <?php
+            if(isset($_GET['successDelete']))
+            {
+                echo "<div class='alert alert-danger'>Vous avez bien supprimé le produit n°".$_GET['successDelete']."</div>";
+            }
+        ?>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Title</th>
+                    <th class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                    $req = $bdd->query("SELECT * FROM products");
+                    while($don = $req->fetch())
+                    {
+                        echo "<tr>";
+                            echo "<td>".$don['id']."</td>";
+                            echo "<td>".$don['title']."</td>";
+                            echo "<td class='text-center'>";
+                                echo "<a href='updateProduct.php?id=".$don['id']."' class='btn btn-warning m-2'>Modifier</a>";
+                                echo "<a href='products.php?delete=".$don['id']."' class='btn btn-danger m-2'>Supprimer</a>";
+                            echo "</td>";
+                        echo "</tr>";
+                    }
+                    $req->closeCursor();
+                ?>
+            </tbody>
+        </table>
     </div>
-    <div>
-        <a href="addProduct.php">Ajouter un produit</a>
-    </div>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>id</th>
-                <th>Title</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-                $req = $bdd->query("SELECT * FROM products");
-                while($don = $req->fetch())
-                {
-                    echo "<tr>";
-                        echo "<td>".$don['id']."</td>";
-                        echo "<td>".$don['title']."</td>";
-                        echo "<td>";
-                            echo "<a href='updateProduct.php?id=".$don['id']."'>Modifier</a>";
-                            echo "<a href='#'>Supprimer</a>";
-                        echo "</td>";
-                    echo "</tr>";
-                }
-                $req->closeCursor();
-            ?>
-        </tbody>
-    </table>
 </body>
 </html>
