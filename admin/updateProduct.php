@@ -32,36 +32,42 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <title>Administration de Stock</title>
+    <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-    <h1>Administration</h1>
-    <div>
-        <a href="products.php">Retour</a>
+    <div class="container">
+
+
+        <h1>Administration</h1>
+        <div>
+            <a href="products.php" class="btn btn-secondary">Retour</a>
+        </div>
+        <h2>Modifier un produit</h2>
+        <form action="treatmentUpdateProduct.php?id=<?= $id ?>" method="POST">
+            <div class="form-group my-3">
+                <label for="title">Titre: </label>
+                <input type="text" id="title" name="title" value="<?= $don['title'] ?>" class="form-control">
+            </div>
+            <div class="form-group my-3">
+                <label for="date">Date: </label>
+                <input type="date" id="date" name="date" value="<?= $don['date'] ?>" class="form-control">
+            </div>
+            <div class="form-group my-3">
+                <label for="description">Description: </label>
+                <textarea name="description" id="description" class="form-control"><?= $don['description'] ?></textarea>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Modifier" class="btn btn-warning">
+            </div>
+        </form>
+        <?php
+            if(isset($_GET['error']))
+            {
+                echo "<div class='alert alert-danger my-2'>Une erreur est survenue (code: ".$_GET['error'].")</div>";
+            }
+        ?>
     </div>
-    <h2>Modifier un produit</h2>
-    <form action="treatmentUpdateProduct.php?id=<?= $id ?>" method="POST">
-        <div class="form-group">
-            <label for="title">Titre: </label>
-            <input type="text" id="title" name="title" value="<?= $don['title'] ?>">
-        </div>
-        <div class="form-group">
-            <label for="date">Date: </label>
-            <input type="date" id="date" name="date" value="<?= $don['date'] ?>">
-        </div>
-        <div class="form-group">
-            <label for="description">Description: </label>
-            <textarea name="description" id="description" cols="30" rows="10"><?= $don['description'] ?></textarea>
-        </div>
-        <div class="form-group">
-            <input type="submit" value="Modifier">
-        </div>
-    </form>
-    <?php
-        if(isset($_GET['error']))
-        {
-            echo "<div class='alert'>Une erreur est survenue (code: ".$_GET['error'].")</div>";
-        }
-    ?>
 </body>
 </html>

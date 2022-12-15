@@ -46,7 +46,7 @@
         <?php
             if(isset($_GET['error']))
             {
-                echo "<div class='alert alert-danger'>Une erreur est survenue (code: ".$_GET['error'].")</div>";
+                echo "<div class='alert alert-danger my-2'>Une erreur est survenue (code: ".$_GET['error'].")</div>";
             }
         ?>
     </div>
