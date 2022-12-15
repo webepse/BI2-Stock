@@ -20,33 +20,35 @@
     <?php
         include("partials/header.php");
     ?>
-    <h1>Administration</h1>
-    <div>
-        <a href="products.php">Retour</a>
+    <div class="container">
+        <h1>Administration</h1>
+        <div>
+            <a href="products.php" class="btn btn-secondary">Retour</a>
+        </div>
+        <h2>Ajouter un produit</h2>
+        <form action="treatmentAddProduct.php" method="POST">
+            <div class="form-group my-3">
+                <label for="title">Titre: </label>
+                <input type="text" id="title" name="title" class="form-control">
+            </div>
+            <div class="form-group my-3">
+                <label for="date">Date: </label>
+                <input type="date" id="date" name="date" class="form-control">
+            </div>
+            <div class="form-group my-3">
+                <label for="description">Description: </label>
+                <textarea name="description" id="description" class="form-control"></textarea>
+            </div>
+            <div class="form-group my-3">
+                <input type="submit" value="Ajouter" class="btn btn-success">
+            </div>
+        </form>
+        <?php
+            if(isset($_GET['error']))
+            {
+                echo "<div class='alert alert-danger'>Une erreur est survenue (code: ".$_GET['error'].")</div>";
+            }
+        ?>
     </div>
-    <h2>Ajouter un produit</h2>
-    <form action="treatmentAddProduct.php" method="POST">
-        <div class="form-group">
-            <label for="title">Titre: </label>
-            <input type="text" id="title" name="title">
-        </div>
-        <div class="form-group">
-            <label for="date">Date: </label>
-            <input type="date" id="date" name="date">
-        </div>
-        <div class="form-group">
-            <label for="description">Description: </label>
-            <textarea name="description" id="description" cols="30" rows="10"></textarea>
-        </div>
-        <div class="form-group">
-            <input type="submit" value="Ajouter">
-        </div>
-    </form>
-    <?php
-        if(isset($_GET['error']))
-        {
-            echo "<div class='alert'>Une erreur est survenue (code: ".$_GET['error'].")</div>";
-        }
-    ?>
 </body>
 </html>
