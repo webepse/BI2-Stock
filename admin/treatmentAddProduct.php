@@ -34,11 +34,45 @@
 
         //vérif si err sinon traitement
         if($err==0){
-            require "../connexion.php";
-            $insert = $bdd->prepare("INSERT INTO products(title,date,description) VALUES(?,?,?)");
-            $insert->execute([$title,$date,$description]);
-            $insert->closeCursor();
-            header("LOCATION:products.php");
+            $dossier = "../images/"; // ../images/monfichier.jpg
+            $fichier = basename($_FILES['image']['name']);
+            $taille_maxi = 2000000;
+            $taille = filesize($_FILES['image']['tmp_name']);
+            $extensions = ['.png','.jpg','.jpeg'];
+            $extension = strrchr($_FILES['image']['name'],'.');
+
+            if(!in_array($extension, $extensions))
+            {
+                $erreur = 1;
+            }
+            
+            if($taille>$taille_maxi){
+                $erreur = 2;
+            }
+
+            if(!isset($erreur))
+            {
+                 // traitement
+                $fichier = strtr($fichier, 
+                 'ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ', 
+                 'AAAAAACEEEEIIIIOOOOOUUUUYaaaaaaceeeeiiiioooooouuuuyy');
+                $fichier = preg_replace('/([^.a-z0-9]+)/i','-',$fichier); 
+                $fichiercptl = rand().$fichier; 
+
+                if(move_uploaded_file($_FILES['image']['tmp_name'], $dossier.$fichiercptl))
+                {
+                    require "../connexion.php";
+                    $insert = $bdd->prepare("INSERT INTO products(title,date,description,cover) VALUES(?,?,?,?)");
+                    $insert->execute([$title,$date,$description,$fichiercptl]);
+                    $insert->closeCursor();
+                    header("LOCATION:products.php?addsuccess=ok");
+                }else{
+                    header("LOCATION:addProduct.php?errorimg=3");
+                }             
+            }else{
+                header("LOCATION:addProduct.php?errorimg=".$erreur);
+            }
+
 
         }else{
             header("LOCATION:addProduct.php?error=".$err);

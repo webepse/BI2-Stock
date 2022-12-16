@@ -26,7 +26,7 @@
             <a href="products.php" class="btn btn-secondary">Retour</a>
         </div>
         <h2>Ajouter un produit</h2>
-        <form action="treatmentAddProduct.php" method="POST">
+        <form action="treatmentAddProduct.php" method="POST" enctype="multipart/form-data">
             <div class="form-group my-3">
                 <label for="title">Titre: </label>
                 <input type="text" id="title" name="title" class="form-control">
@@ -38,6 +38,10 @@
             <div class="form-group my-3">
                 <label for="description">Description: </label>
                 <textarea name="description" id="description" class="form-control"></textarea>
+            </div>
+            <div class="form-group my-3">
+                <label for="image">Image de couverture: </label>
+                <input type="file" name="image" id="image" class="form-control">
             </div>
             <div class="form-group my-3">
                 <input type="submit" value="Ajouter" class="btn btn-success">
