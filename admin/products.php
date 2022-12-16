@@ -19,6 +19,9 @@
         }
         $verif->closeCursor();
         
+        // supprimer l'image du produit
+        unlink("../images/".$donVerif['cover']);
+
         // supprimer le produit
         $delete = $bdd->prepare("DELETE FROM products WHERE id=?");
         $delete->execute([$id]);
@@ -54,6 +57,14 @@
             if(isset($_GET['successDelete']))
             {
                 echo "<div class='alert alert-danger'>Vous avez bien supprimé le produit n°".$_GET['successDelete']."</div>";
+            }
+            if(isset($_GET['addsuccess']))
+            {
+               echo "<div class='alert alert-success'>Vous avez bien ajouté un nouveau produit</div>"; 
+            }
+            if(isset($_GET['updatesuccess']))
+            {
+                echo "<div class='alert alert-warning'>Vous avez bien modifié le produit n°".$_GET['updatesuccess']."</div>";
             }
         ?>
         <table class="table table-striped">
