@@ -45,7 +45,7 @@
             <a href="products.php" class="btn btn-secondary">Retour</a>
         </div>
         <h2>Modifier un produit</h2>
-        <form action="treatmentUpdateProduct.php?id=<?= $id ?>" method="POST">
+        <form action="treatmentUpdateProduct.php?id=<?= $id ?>" method="POST" enctype="multipart/form-data">
             <div class="form-group my-3">
                 <label for="title">Titre: </label>
                 <input type="text" id="title" name="title" value="<?= $don['title'] ?>" class="form-control">
@@ -57,6 +57,15 @@
             <div class="form-group my-3">
                 <label for="description">Description: </label>
                 <textarea name="description" id="description" class="form-control"><?= $don['description'] ?></textarea>
+            </div>
+            <div class="form-group-my-3">
+                <div class="row">
+                    <div class="col-4">
+                        <img src="../images/<?= $don['cover'] ?>" alt="image du produit <?= $don['title'] ?>" class="img-fluid">
+                    </div>
+                </div>
+                <label for="image">Modifier l'image de couverture</label>
+                <input type="file"  id="image" name="image" class="form-control">
             </div>
             <div class="form-group">
                 <input type="submit" value="Modifier" class="btn btn-warning">

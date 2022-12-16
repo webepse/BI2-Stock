@@ -53,17 +53,70 @@
 
         //vérif si err sinon traitement
         if($err==0){
-            require "../connexion.php";
-            $update = $bdd->prepare("UPDATE products SET title=:titre, date=:date, description=:description WHERE id=:myid");
-            $update->execute([
-                ":titre" => $title, 
-                ":date" => $date, 
-                ":description" => $description, 
-                ":myid" => $id
-            ]);
-            $update->closeCursor();
-            header("LOCATION:products.php");
 
+            if(empty($_FILES['image']['tmp_name']))
+            {
+                // pas d'image, donc modif sans fichier
+                require "../connexion.php";
+                $update = $bdd->prepare("UPDATE products SET title=:titre, date=:date, description=:description WHERE id=:myid");
+                $update->execute([
+                    ":titre" => $title, 
+                    ":date" => $date, 
+                    ":description" => $description, 
+                    ":myid" => $id
+                ]);
+                $update->closeCursor();
+                header("LOCATION:products.php");
+            }else{
+                // traitement de l'image pour la modification
+                $dossier = "../images/"; // ../images/monfichier.jpg
+                $fichier = basename($_FILES['image']['name']);
+                $taille_maxi = 2000000;
+                $taille = filesize($_FILES['image']['tmp_name']);
+                $extensions = ['.png','.jpg','.jpeg'];
+                $extension = strrchr($_FILES['image']['name'],'.');
+
+                if(!in_array($extension, $extensions))
+                {
+                    $erreur = 1;
+                }
+                
+                if($taille>$taille_maxi){
+                    $erreur = 2;
+                }
+
+                if(!isset($erreur))
+                {
+                     // traitement
+                    $fichier = strtr($fichier, 
+                     'ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ', 
+                     'AAAAAACEEEEIIIIOOOOOUUUUYaaaaaaceeeeiiiioooooouuuuyy');
+                    $fichier = preg_replace('/([^.a-z0-9]+)/i','-',$fichier); 
+                    $fichiercptl = rand().$fichier; 
+    
+                    if(move_uploaded_file($_FILES['image']['tmp_name'], $dossier.$fichiercptl))
+                    {
+                        // supprimer le fichier de base
+                        unlink("../images/".$don['cover']);
+                        require "../connexion.php";
+                        $update = $bdd->prepare("UPDATE products SET title=:titre, date=:date, description=:description, cover=:image WHERE id=:myid");
+                        $update->execute([
+                            ":titre" => $title, 
+                            ":date" => $date, 
+                            ":description" => $description, 
+                            ":image"=>$fichiercptl,
+                            ":myid" => $id
+                        ]);
+                        $update->closeCursor();
+                        header("LOCATION:products.php?updatesuccess=".$id);
+                    }else{
+                        header("LOCATION:updateProduct.php?id=".$id."&errorimg=3");
+                    }             
+                }else{
+                    header("LOCATION:updateProduct.php?id=".$id."&errorimg=".$erreur);
+                }
+
+            }
         }else{
             header("LOCATION:updateProduct.php?id=".$id."&error=".$err);
         }
